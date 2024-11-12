@@ -30,7 +30,7 @@ display:flex;
 align-items:center;
 justify-content:flex-end;
 
-a{
+a,button{
   color:#fff;
   font-weight:bold;
   text-decoration:none;
@@ -42,7 +42,13 @@ a{
 
  
   }
-  #notification{
+
+  #notification{ //button
+
+    background:none;
+    border:none;
+    cursor:pointer;
+
     img{
       width:30px;
       height:30px
@@ -60,7 +66,7 @@ a{
     &:hover{
       opacity:0.5;
     }
-
+  
 }
 
 
