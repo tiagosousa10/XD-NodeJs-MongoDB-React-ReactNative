@@ -18,7 +18,7 @@ function Header({lateCount, clickNotification}) {
       <span className="dividir"   />
       <Link to='/task' >NOVA TAREFA</Link>
       <span className="dividir"   />
-      <Link to='#' >SINCRONIZAR TELEMOVEL</Link>
+      <Link to='/qrcode' >SINCRONIZAR TELEMOVEL</Link>
       <span className="dividir"   />
       <button onClick={clickNotification} id="notification" >
         <img src={bell} alt="Notificacao" />
