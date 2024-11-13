@@ -6,11 +6,9 @@ display:flex;
 align-items:center;
 flex-direction:column
 `
-
 export const Form = styled.div`
 width:50%;
 margin-bottom:70px;
-
 `
 
 export const TypeIcons = styled.div`
@@ -66,7 +64,6 @@ img{
   bottom:30px
 }
 `
-
 
 export const TextArea = styled.div `
 width:100%;

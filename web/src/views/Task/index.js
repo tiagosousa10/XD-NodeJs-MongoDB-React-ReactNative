@@ -13,8 +13,15 @@ import iconClock from '../../assets/clock.png'
 
 
 function Task() {
-const [lateCount,setLateCount] = useState()
-const [type,setType] = useState()
+const [lateCount,setLateCount] = useState() // para renderizer API com as TAREFASatrasadas
+const [type,setType] = useState() //TIPO da TAREFA
+const [id,setId] = useState() //--id da TAREFA
+const [done,setDone] = useState(false) //-- Se está FEITA ou NAO
+const [title,setTitle] = useState();
+const [description,setDescription] = useState() //
+const [date,setDate] = useState()
+const [hour,setHour] = useState()
+const [macaddress,setMacaddress] = useState('11:11:11:11:11:11')
 
 
 async function lateVerify(){
@@ -22,6 +29,21 @@ async function lateVerify(){
   .then((response) => {
     setLateCount(response.data.length)
 
+  })
+}
+
+async function Save(){
+  await api.post('/task', {
+    macaddress,
+    type,
+    title,
+    description,
+    when:`${date}T${hour}:00.000`
+    //when: `${date}T${hour}:00.000`
+  }).then( () => {
+    alert('TAREFA CADASTRADA com SUCESSO!')
+  }).catch((e)=> {
+    alert('Nao foi possivel',e)
   })
 }
 
@@ -49,39 +71,47 @@ useEffect(()=> {
       </S.TypeIcons>
 
       <S.Input>
-        <span>Titulo</span>
-        <input type="text" placeholder="Titulo da tarefa" />
+        <span>Titulo </span>
+        <input 
+          type="text"
+          placeholder="Titulo da tarefa" 
+          onChange={(e) => setTitle(e.target.value)}
+          value={title} />
       </S.Input>
 
       <S.TextArea>
-        <span>Titulo</span>
-        <textarea rows={5} placeholder="Detalhes da Tarefa"  />
+        <span>Descrição  </span>
+        <textarea 
+          rows={5} 
+          placeholder="Detalhes da Tarefa" 
+          onChange={(e) => setDescription(e.target.value)} 
+          value={description}  />
       </S.TextArea>
 
 
       <S.Input>
         <span>Data</span>
-        <input type="date" placeholder="Titulo da tarefa" />
+        <input type="date" placeholder="Titulo da tarefa" onChange={(e) => setDate(e.target.value)} value={date} />
         <img src={iconCalendar} alt="Data" />
       </S.Input>
 
       <S.Input>
         <span>Hora</span>
-        <input type="time" placeholder="Titulo da tarefa"  />
+        <input type="time" placeholder="Titulo da tarefa" onChange={(e) => setHour(e.target.value)} value={hour} />
         <img src={iconClock} alt="Relógio"  />
 
       </S.Input>
 
         <S.Options>
           <div>
-            <input type="checkbox" />
-            <span>CONCLUIDO</span>
+            <input type="checkbox" checked={done} onChange={() => setDone(!done)} />
+            <span>CONCLUIDO - {done ? 'concluido' : 'falso'}  </span>
           </div>
           <button type="button">EXCLUIR</button>
         </S.Options>
 
         <S.Save>
-          <button type="button">GUARDAR</button>
+          <button type="button" onClick={Save}>GUARDAR</button>
         </S.Save>
     </S.Form>
      
