@@ -1,11 +1,25 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import * as S from './styles'
 import {Link} from 'react-router-dom'
 import logo from '../../assets/logo.png'
 import bell from '../../assets/bell.png'
 
+import api from '../../services/api'
 
-function Header({lateCount, clickNotification}) {
+function Header({ clickNotification}) {
+  const [lateCount,setLateCount] = useState()
+
+  async function lateVerify(){
+    await api.get(`/task/filter/late/11:11:11:11:11:11`)
+    .then((response) => {
+      setLateCount(response.data.length)
+  
+    })
+  }
+useEffect(()=> {
+  lateVerify()
+},[])
+  
   return (
   <S.Container>
 
@@ -19,12 +33,15 @@ function Header({lateCount, clickNotification}) {
       <Link to='/task' >NOVA TAREFA</Link>
       <span className="dividir"   />
       <Link to='/qrcode' >SINCRONIZAR TELEMOVEL</Link>
-      <span className="dividir"   />
-      <button onClick={clickNotification} id="notification" >
-        <img src={bell} alt="Notificacao" />
-        <span>{lateCount}</span>
-      </button>
-
+      { lateCount &&
+      <>
+        <span className="dividir"   />
+        <button onClick={clickNotification} id="notification" >
+          <img src={bell} alt="Notificacao" />
+          <span>{lateCount}</span>
+        </button>
+      </>
+    }
     </S.RightSide>
 
   </S.Container>

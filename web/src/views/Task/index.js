@@ -18,7 +18,6 @@ import iconClock from '../../assets/clock.png'
 
 function Task() {
 const [redirect,setRedirect] = useState()
-const [lateCount,setLateCount] = useState() // para renderizer API com as TAREFASatrasadas
 const [type,setType] = useState() //TIPO da TAREFA
 const [taskId,setTaskId] = useState() //--id da TAREFA
 const [done,setDone] = useState(false) //-- Se está FEITA ou NAO
@@ -29,15 +28,6 @@ const [hour,setHour] = useState()
 const [macaddress,setMacaddress] = useState('11:11:11:11:11:11')
 
 const {id} = useParams() // -- loadTaskDetails -- MANEIRA ATUALIZADA 
-
-
-async function lateVerify(){
-  await api.get(`/task/filter/late/11:11:11:11:11:11`)
-  .then((response) => {
-    setLateCount(response.data.length)
-
-  })
-}
 
 async function loadTaskDetails(){
   
@@ -106,19 +96,16 @@ async function Remove (){
 }
 
 useEffect(()=> {
-  lateVerify();
  if(id){
   loadTaskDetails()
  }
 },[id])
 
 
-
-
   return (
    <S.Container>
    {redirect && <Navigate to="/"  />}
-     <Header lateCount={lateCount}  />
+     <Header   />
     <S.Form>
 
       <S.TypeIcons>
