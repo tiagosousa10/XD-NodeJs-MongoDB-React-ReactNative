@@ -44,6 +44,7 @@ async function loadTaskDetails(){
   await api.get(`/task/${id}`)
   .then((response) => {
     setType(response.data.type)
+    setDone(response.data.done)
     setTitle(response.data.title)
     setDescription(response.data.description)
     setDate(format(new Date(response.data.when), 'yyyy-MM-dd'))
@@ -53,6 +54,18 @@ async function loadTaskDetails(){
 }
 
 async function Save(){
+//validaçao dos dados
+if(!title)
+  return alert('Informe o Titulo da Tarefa!')
+else if(!description)
+  return alert('Informe a Descriçao!')
+else if(!type)
+  return alert('Informe o Tipo!')
+else if(!date)
+  return alert('Informe a Data')
+else if(!hour)
+  return alert('Informe a Hora!')
+
   if(id){ // se tiver um id vindo dos parametros vou utilizar o PUT para ATUALIZAR , se quiser
     await api.put(`/task/${id}`, {
       macaddress,
@@ -82,6 +95,14 @@ async function Save(){
   }
 
  
+}
+
+async function Remove (){
+  const res = window.confirm('Deseja realmente remover a tarefa?')
+  if(res === true){
+  await api.delete(`/task/${id}`)
+  .then(() => setRedirect(true)).catch((e) => {alert('Não foi Possivel Excluir!')})
+  }
 }
 
 useEffect(()=> {
@@ -148,7 +169,10 @@ useEffect(()=> {
             <input type="checkbox" checked={done} onChange={() => setDone(!done)} />
             <span>CONCLUIDO - {done ? 'concluido' : 'falso'}  </span>
           </div>
-          <button type="button">EXCLUIR</button>
+          {
+          id && 
+          <button type="button" onClick={Remove}>EXCLUIR</button>
+          }
         </S.Options>
 
         <S.Save>
