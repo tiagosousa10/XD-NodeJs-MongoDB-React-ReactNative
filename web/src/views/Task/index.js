@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
-import {useParams} from 'react-router-dom'
+import {Navigate,useParams} from 'react-router-dom'
+
 import { format } from "date-fns";
 
 import * as S from './styles'
@@ -16,6 +17,7 @@ import iconClock from '../../assets/clock.png'
 
 
 function Task() {
+const [redirect,setRedirect] = useState()
 const [lateCount,setLateCount] = useState() // para renderizer API com as TAREFASatrasadas
 const [type,setType] = useState() //TIPO da TAREFA
 const [taskId,setTaskId] = useState() //--id da TAREFA
@@ -51,30 +53,50 @@ async function loadTaskDetails(){
 }
 
 async function Save(){
-  await api.post('/task', {
-    macaddress,
-    type,
-    title,
-    description,
-    when:`${date}T${hour}:00.000`
-    //when: `${date}T${hour}:00.000`
-  }).then( () => {
-    alert('TAREFA CADASTRADA com SUCESSO!')
-  }).catch((e)=> {
-    alert('Nao foi possivel',e)
-  })
+  if(id){ // se tiver um id vindo dos parametros vou utilizar o PUT para ATUALIZAR , se quiser
+    await api.put(`/task/${id}`, {
+      macaddress,
+      type,
+      title,
+      description,
+      when:`${date}T${hour}:00.000`
+    }).then( () => {
+    setRedirect(true)
+    }).catch((e)=> {
+      alert('Nao foi possivel ATUALIZAR TAREFA',e)
+    })
+  } else { //crio uma tarefa com o POST
+    await api.post(`/task`, {
+      macaddress,
+      type,
+      title,
+      description,
+      when: `${date}T${hour}:00.000`
+
+    }).then( () => {
+      setRedirect(true)
+    }).catch((e)=> {
+      alert('Nao foi possivel CRIAR TAREFA',e)
+      console.log(macaddress,type,title)
+    })
+  }
+
+ 
 }
 
 useEffect(()=> {
   lateVerify();
+ if(id){
   loadTaskDetails()
-},[])
+ }
+},[id])
 
 
 
 
   return (
    <S.Container>
+   {redirect && <Navigate to="/"  />}
      <Header lateCount={lateCount}  />
     <S.Form>
 
