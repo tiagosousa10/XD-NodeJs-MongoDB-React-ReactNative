@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     flex:1,
     backgroundColor:'#fff',
     alignItems:'center', //alinhamento - HORIZONTAL
-    justifyContent:'center' //alinhamento - VERTICAL
+    justifyContent:'flex-start' //alinhamento - VERTICAL
   }
 })
 
