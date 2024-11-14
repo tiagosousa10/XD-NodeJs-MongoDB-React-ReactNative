@@ -14,9 +14,14 @@ const [redirect,setRedirect] = useState(false)
 
 
 async function SaveMac(){ //guardar no localStorage
-  localStorage.setItem('@todo/macaddress', mac)
-  setRedirect(true)
-  window.location.reload()
+  if(!mac){
+    alert('Precisas de informar o numero do QRCODE através do Telemovel')
+  } else {
+    localStorage.setItem('@todo/macaddress', mac)
+    setRedirect(true)
+    window.location.reload()
+  }
+
 }
 
 return(

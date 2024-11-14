@@ -27,7 +27,6 @@ const [title,setTitle] = useState();
 const [description,setDescription] = useState() //
 const [date,setDate] = useState()
 const [hour,setHour] = useState()
-const [macaddress,setMacaddress] = useState('11:11:11:11:11:11')
 
 const {id} = useParams() // -- loadTaskDetails -- MANEIRA ATUALIZADA 
 
@@ -60,7 +59,7 @@ else if(!hour)
 
   if(id){ // se tiver um id vindo dos parametros vou utilizar o PUT para ATUALIZAR , se quiser
     await api.put(`/task/${id}`, {
-      macaddress,
+      macaddress:isConnected,
       type,
       title,
       description,
@@ -72,7 +71,7 @@ else if(!hour)
     })
   } else { //crio uma tarefa com o POST
     await api.post(`/task`, {
-      macaddress,
+      macaddress:isConnected,
       type,
       title,
       description,
@@ -82,7 +81,6 @@ else if(!hour)
       setRedirect(true)
     }).catch((e)=> {
       alert('Nao foi possivel CRIAR TAREFA',e)
-      console.log(macaddress,type,title)
     })
   }
 
