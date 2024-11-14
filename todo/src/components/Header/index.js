@@ -1,5 +1,5 @@
 import React from "react";
-import {View,Text,Image,TouchableOpacity} from 'react-native'
+import {View,Text,Image,TouchableOpacity, SafeAreaView} from 'react-native'
 
 import styles from './styles'
 
@@ -11,7 +11,7 @@ import back from '../../assets/back.png'
 
 export default function Header({showNotification,showBack}){
 return(
-  <View style={styles.header}>
+  <SafeAreaView style={styles.header}>
     {
     showBack
      ?
@@ -38,6 +38,6 @@ return(
 
     
 
-  </View>
+  </SafeAreaView>
 )
 }

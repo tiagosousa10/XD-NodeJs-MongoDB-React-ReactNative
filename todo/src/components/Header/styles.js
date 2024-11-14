@@ -18,6 +18,7 @@ logo:{
 notification:{
   position:'absolute',
   right:20,
+  bottom:10
 },
 notificationImage:{
   width:30,
@@ -40,7 +41,8 @@ circle:{
 },
 leftIcon:{
   position:'absolute',
-  left:20
+  left:20,
+  bottom:10
 },
 leftIconImage:{
   width:30,
