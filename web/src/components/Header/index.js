@@ -6,6 +6,8 @@ import bell from '../../assets/bell.png'
 
 import api from '../../services/api'
 
+import isConnected from '../../utils/isConnected';
+
 function Header({ clickNotification}) {
   const [lateCount,setLateCount] = useState()
 
@@ -20,6 +22,13 @@ useEffect(()=> {
   lateVerify()
 },[])
   
+
+async function Logout(){
+  localStorage.removeItem('@todo/macaddress')
+  window.location.reload()
+}
+
+
   return (
   <S.Container>
 
@@ -32,7 +41,11 @@ useEffect(()=> {
       <span className="dividir"   />
       <Link to='/task' >NOVA TAREFA</Link>
       <span className="dividir"   />
+      {!isConnected ? 
       <Link to='/qrcode' >SINCRONIZAR TELEMOVEL</Link>
+       :
+      <button type="button" id="btnSair" onClick={Logout}>SAIR</button>
+    }
       { lateCount &&
       <>
         <span className="dividir"   />

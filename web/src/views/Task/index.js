@@ -5,7 +5,9 @@ import { format } from "date-fns";
 
 import * as S from './styles'
 
+//  utils
 import api from '../../services/api'
+import isConnected from "../../utils/isConnected";
 
 //COMPONENTS
 import Header from "../../components/Header";
@@ -96,6 +98,10 @@ async function Remove (){
 }
 
 useEffect(()=> {
+if(!isConnected){
+  setRedirect(true)
+}
+
  if(id){
   loadTaskDetails()
  }

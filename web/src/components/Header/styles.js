@@ -75,4 +75,12 @@ a,button{
       margin:0 10px;
       color:#fff
     }
+
+
+   #btnSair{
+      font-size:18px;
+      background:none;
+      border:none;
+      cursor:pointer;
+    }
 `
