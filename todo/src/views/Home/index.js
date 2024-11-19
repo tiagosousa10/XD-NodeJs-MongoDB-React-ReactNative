@@ -11,17 +11,20 @@ import TaskCard from "../../components/TaskCard";
 
 //api  --ter sempre cuidado com as PERMISSOES da FIREWALL!!!!!
 import api from '../../services/api';
+import { set } from "date-fns";
 
 export default function Home(){
   const [filter,setFilter] = useState('all')
   const [tasks,setTasks] = useState([])
   const [load,setLoad] = useState(false)
+  const [lateCount,setLateCount] = useState();
+
 
   async function loadTasks(){
   setLoad(true)
 
   try{
-    const response = await api.get('/task/filter/all/11:11:11:11:11:11',{
+    const response = await api.get(`/task/filter/${filter}/11:11:11:11:11:11`,{
       timeout:2000
     })
 
@@ -35,14 +38,32 @@ export default function Home(){
  
 }
 
+async function lateVerify(){
+  try{
+    await api.get('/task/filter/late/11:11:11:11:11:11')
+    .then((response) => {
+      setLateCount(response.data.length)
+    })
+
+    console.log(response.data.length)
+  }catch(e){
+    console.log('erro-lateVerify: ', e)
+  }
+  }
+
+function Notification(){
+  setFilter('late')
+}
+
 useEffect(() => {
-  loadTasks()
-},[])
+  loadTasks();
+  lateVerify()
+},[filter])
 
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header showNotification={true} showBack={false}/>
+      <Header showNotification={true} showBack={false} pressNotification={Notification} late={lateCount} />
 
       <View style={styles.filter}>
 
@@ -75,7 +96,7 @@ useEffect(() => {
 
        <View style={styles.title} >
         <Text style={styles.titleText}>
-          Tarefas
+          Tarefas {filter === 'late' && ' ATRASADAS' }
           </Text>
        </View> 
 
@@ -88,7 +109,7 @@ useEffect(() => {
           :
           tasks.map((task) => (
 
-            <TaskCard  done={false} title={task.title} when={task.when} />
+            <TaskCard  done={false} title={task.title} when={task.when} type={task.type} />
           ))
       }
 
@@ -99,3 +120,4 @@ useEffect(() => {
     </SafeAreaView>
   )
 }
+
