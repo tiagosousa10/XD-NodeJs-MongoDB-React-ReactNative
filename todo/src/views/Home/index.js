@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import {SafeAreaView,View,Text, TouchableOpacity, ScrollView} from 'react-native'
+import React, { useState, useEffect } from "react";
+import {SafeAreaView,View,Text, TouchableOpacity, ScrollView, ActivityIndicator} from 'react-native'
 
 import styles from "./styles";
 
@@ -9,8 +9,35 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import TaskCard from "../../components/TaskCard";
 
+//api  --ter sempre cuidado com as PERMISSOES da FIREWALL!!!!!
+import api from '../../services/api';
+
 export default function Home(){
-  const [filter,setFilter] = useState('today')
+  const [filter,setFilter] = useState('all')
+  const [tasks,setTasks] = useState([])
+  const [load,setLoad] = useState(false)
+
+  async function loadTasks(){
+  setLoad(true)
+
+  try{
+    const response = await api.get('/task/filter/all/11:11:11:11:11:11',{
+      timeout:2000
+    })
+
+    setTasks(response.data)
+
+  }catch(e){
+    console.log("erro-try-catch: ",e)
+  }finally{
+    setLoad(false) // sempre que carregar 
+  }
+ 
+}
+
+useEffect(() => {
+  loadTasks()
+},[])
 
 
   return (
@@ -50,13 +77,22 @@ export default function Home(){
         <Text style={styles.titleText}>
           Tarefas
           </Text>
-          </View> 
+       </View> 
 
-        <ScrollView style={styles.content} contentContainerStyle={{alignItems:'center'}}>
+      <ScrollView style={styles.content} contentContainerStyle={{alignItems:'center'}}>
 
-        <TaskCard done={true}/>
+        {
+          load
+           ?       
+            <ActivityIndicator color='#ee6b26' size={50} />
+          :
+          tasks.map((task) => (
 
-        </ScrollView>
+            <TaskCard  done={false} title={task.title} when={task.when} />
+          ))
+      }
+
+      </ScrollView>
 
       <Footer  icon={'add'} />
 
