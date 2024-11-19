@@ -13,7 +13,7 @@ import TaskCard from "../../components/TaskCard";
 import api from '../../services/api';
 import { set } from "date-fns";
 
-export default function Home(){
+export default function Home({navigation}){
   const [filter,setFilter] = useState('all')
   const [tasks,setTasks] = useState([])
   const [load,setLoad] = useState(false)
@@ -53,6 +53,10 @@ async function lateVerify(){
 
 function Notification(){
   setFilter('late')
+}
+
+function New(){
+  navigation.navigate('Task')
 }
 
 useEffect(() => {
@@ -115,7 +119,7 @@ useEffect(() => {
 
       </ScrollView>
 
-      <Footer  icon={'add'} />
+      <Footer  icon={'add'} onPress={New} />
 
     </SafeAreaView>
   )

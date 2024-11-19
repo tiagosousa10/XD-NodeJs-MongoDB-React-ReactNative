@@ -22,13 +22,13 @@ import {
   import typeIcons from '../../utils/typeIcons.js'
 
 
-  export default function Task(){
+  export default function Task({navigation}){
     const [done,setDone] = useState(false)
 
 
     return(
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
-        <Header showBack={true}  />
+        <Header showBack={true} navigation={navigation} />
 
         <ScrollView style={{width:'100%'}}>
 
