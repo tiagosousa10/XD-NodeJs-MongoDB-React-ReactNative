@@ -17,7 +17,8 @@ import {
   //COMPONENTS
   import Header from '../../components/Header'
   import Footer from '../../components/Footer'
-
+  //import DateTimeInputAndroid from "../../components/DateTimeInput/index.android.js";
+  import Index from '../../components/DateTimeInput/'
   import typeIcons from '../../utils/typeIcons.js'
 
 
@@ -48,6 +49,9 @@ import {
 
           <Text style={styles.label}>Detalhes</Text>
           <TextInput style={styles.inputarea} maxLength={200} placeholder="Detalhes da atividade..." multiline={true} />
+
+          <Index type={'date'}  />
+          <Index type={'hour'}  />
 
           <View style={styles.inLine}  >
             <View style={styles.inputInline}>  
