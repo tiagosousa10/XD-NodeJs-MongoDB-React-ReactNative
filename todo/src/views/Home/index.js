@@ -87,7 +87,12 @@ useEffect(() => {
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <Header showNotification={true} showBack={false} pressNotification={Notification} late={lateCount} />
+      <Header 
+      showNotification={true} 
+      showBack={false} 
+      pressNotification={Notification} 
+      late={lateCount}
+      navigation={navigation} />
 
       <View style={styles.filter}>
 
