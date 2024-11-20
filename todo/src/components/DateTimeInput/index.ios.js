@@ -7,7 +7,6 @@ import iconClock from "../../assets/clock.png";
 
 import styles from "./styles";
 
-import {format} from 'date-fns'
 
 
 export default function DateTimeInputIOS({ type, save, date , hour }) {
@@ -23,6 +22,7 @@ export default function DateTimeInputIOS({ type, save, date , hour }) {
   };
 
   const formatDate = (date) => {
+
     if (type === "date") {
       return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
     }

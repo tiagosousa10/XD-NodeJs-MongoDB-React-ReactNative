@@ -40,7 +40,7 @@ import {
     const [macaddress,setMacaddress] = useState('11:11:11:11:11:11')
     const [load,setLoad] = useState(true)
 
-    async function New(){
+    async function SaveTask(){
 
           if(!title)
             return Alert.alert('Defina o nome da Tarefa!')
@@ -53,15 +53,35 @@ import {
           if(!hour)
             return Alert.alert('Defina a HORA da Tarefa!')
 
-          await api.post('/task',{
-            macaddress,
-            type,
-            title,
-            description,
-            when: `${date}T${hour}.000`
-          }).then(()=> {
-            navigation.navigate('Home')
-          })
+          try{
+            if(id){ //atualizar tarefa
+              await api.put(`/task/${id}`,{
+                macaddress,
+                done,
+                type,
+                title,
+                description,
+                when: `${date}T${hour}.000`
+              }).then(()=> {
+                navigation.navigate('Home')
+              })
+              console.log('consegui')
+            }else{
+              await api.post('/task',{
+                macaddress,
+                type,
+                title,
+                description,
+                when: `${date}T${hour}.000`
+              }).then(()=> {
+                navigation.navigate('Home')
+              })
+            }
+          }catch(e){
+            console.log('erro: ',e)
+          }
+
+         
         }
     
     async function LoadTask(){
@@ -84,18 +104,14 @@ import {
       })
     }
 
-
-
-
     useEffect(()=> {
       getMacAddress()  
       if(route.params){
         setId(route.params.idtask)
         LoadTask().then(() => {setLoad(false)})
-
       }
       
-    })
+    },[LoadTask])
 
 
     return(
@@ -157,7 +173,7 @@ import {
         </ScrollView>
         }
 
-        <Footer icon={'save'} onPress={New} />
+        <Footer icon={'save'} onPress={SaveTask} />
       </KeyboardAvoidingView>
     )
   }

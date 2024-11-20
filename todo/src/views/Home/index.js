@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {SafeAreaView,View,Text, TouchableOpacity, ScrollView, ActivityIndicator, Alert} from 'react-native'
+import {SafeAreaView,View,Text, TouchableOpacity, ScrollView, ActivityIndicator, Alert, KeyboardAvoidingView} from 'react-native'
 
 import styles from "./styles";
 import * as Network from 'expo-network'
@@ -50,7 +50,7 @@ export default function Home({navigation}){
 
   async function lateVerify(){
     try{
-      await api.get('/task/filter/late/11:11:11:11:11:11')
+      await api.get(`/task/filter/late/${macaddress}`)
       .then((response) => {
         setLateCount(response.data.length)
       })
@@ -84,7 +84,7 @@ useEffect(() => {
 
 
   return (
-    <SafeAreaView style={styles.container}>
+    <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <Header showNotification={true} showBack={false} pressNotification={Notification} late={lateCount} />
 
       <View style={styles.filter}>
@@ -132,9 +132,9 @@ useEffect(() => {
           tasks.map((task) => (
 
             <TaskCard  
-            done={false} 
-            title={task.title}
-             when={task.when}
+              done={task.done} 
+              title={task.title}
+              when={task.when}
               type={task.type}
               onPress={() => Show(task._id)}
               />
@@ -145,7 +145,7 @@ useEffect(() => {
 
       <Footer  icon={'add'} onPress={New} />
 
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   )
 }
 
