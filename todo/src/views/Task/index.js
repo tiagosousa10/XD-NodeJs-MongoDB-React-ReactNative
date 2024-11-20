@@ -104,6 +104,25 @@ import {
       })
     }
 
+    async function DeleteTask(){
+      await api.delete(`/task/${id}`).then(() => {
+        navigation.navigate('Home')
+      })
+    }
+
+    async function Remove(){
+      Alert.alert(
+        'Remover Tarefa',
+        'Deseja realmente remover a tarefa?',
+        [
+          {text:'Cancelar'},
+          {text:'Confirmar', onPress: () => DeleteTask()}
+
+        ],
+        {cancelable:true}
+      )
+    }
+
     useEffect(()=> {
       getMacAddress()  
       if(route.params){
@@ -111,7 +130,7 @@ import {
         LoadTask().then(() => {setLoad(false)})
       }
       
-    },[LoadTask])
+    },[macaddress])
 
 
     return(
@@ -165,7 +184,7 @@ import {
               <Switch onValueChange={() => setDone(!done)} value={done} thumbColor={done? '#00761b' : '#ee6b26'} />
               <Text style={styles.switchLabel}>Concluido</Text>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={Remove}>
               <Text style={styles.removeLabel}>EXCLUIR</Text>
             </TouchableOpacity>
           </View>

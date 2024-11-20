@@ -65,13 +65,15 @@ export default function Home({navigation}){
   setFilter('late')
 }
 
-function New(){
-  navigation.navigate('Task')
-}
+  function New(){
+    navigation.navigate('Task')
+  }
 
-function Show(id){
-  navigation.navigate('Task', {idtask:id})
-}
+  function Show(id){
+    navigation.navigate('Task', {idtask:id})
+  }
+
+
 
 useEffect(() => {
 
