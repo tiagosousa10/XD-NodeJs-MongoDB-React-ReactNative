@@ -13,7 +13,7 @@ import {format} from 'date-fns'
 export default function DateTimeInputIOS({ type, save }) {
   const [datetime, setDateTime] = useState(new Date()); // Estado para armazenar data/hora
   const [showPicker, setShowPicker] = useState(false); // Estado para controlar visibilidade do picker
-
+  const [hour,setHour] = useState('12:34')
   const handleDateChange = (event, selectedDate) => {
     if (selectedDate) {
       setDateTime(selectedDate); // Atualiza a data/hora selecionada

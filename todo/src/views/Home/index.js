@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {SafeAreaView,View,Text, TouchableOpacity, ScrollView, ActivityIndicator} from 'react-native'
+import {SafeAreaView,View,Text, TouchableOpacity, ScrollView, ActivityIndicator, Alert} from 'react-native'
 
 import styles from "./styles";
+import * as Network from 'expo-network'
 
 
 //COMPONENTS
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import TaskCard from "../../components/TaskCard";
+
 
 //api  --ter sempre cuidado com as PERMISSOES da FIREWALL!!!!!
 import api from '../../services/api';
@@ -18,40 +20,48 @@ export default function Home({navigation}){
   const [tasks,setTasks] = useState([])
   const [load,setLoad] = useState(false)
   const [lateCount,setLateCount] = useState();
+  const [macaddress,setMacaddress] = useState('11:11:11:11:11:11')
+
+
+  async function getMacAddress(){
+      await Network.getIpAddressAsync().then((mac) => { //ios e android novos nao suportam mac logo fiz com o ip
+       // Alert.alert(mac)
+      })
+    }
 
 
   async function loadTasks(){
-  setLoad(true)
+    setLoad(true)
 
-  try{
-    const response = await api.get(`/task/filter/${filter}/11:11:11:11:11:11`,{
-      timeout:2000
-    })
+    try{
+      const response = await api.get(`/task/filter/${filter}/${macaddress}`,{
+        timeout:2000
+      })
 
-    setTasks(response.data)
+      setTasks(response.data)
 
-  }catch(e){
-    console.log("erro-try-catch: ",e)
-  }finally{
-    setLoad(false) // sempre que carregar 
-  }
- 
-}
-
-async function lateVerify(){
-  try{
-    await api.get('/task/filter/late/11:11:11:11:11:11')
-    .then((response) => {
-      setLateCount(response.data.length)
-    })
-
-    console.log(response.data.length)
-  }catch(e){
-    console.log('erro-lateVerify: ', e)
-  }
+    }catch(e){
+      console.log("erro-try-catch: ",e)
+    }finally{
+      setLoad(false) // sempre que carregar 
+    }
+  
   }
 
-function Notification(){
+  async function lateVerify(){
+    try{
+      await api.get('/task/filter/late/11:11:11:11:11:11')
+      .then((response) => {
+        setLateCount(response.data.length)
+      })
+
+      console.log(response.data.length)
+    }catch(e){
+      console.log('erro-lateVerify: ', e)
+    }
+    }
+
+  function Notification(){
   setFilter('late')
 }
 
@@ -59,8 +69,16 @@ function New(){
   navigation.navigate('Task')
 }
 
+function Show(id){
+  navigation.navigate('Task', {idtask:id})
+}
+
 useEffect(() => {
-  loadTasks();
+
+  getMacAddress().then(()=> {
+    loadTasks();
+
+  })
   lateVerify()
 },[filter])
 
@@ -113,7 +131,13 @@ useEffect(() => {
           :
           tasks.map((task) => (
 
-            <TaskCard  done={false} title={task.title} when={task.when} type={task.type} />
+            <TaskCard  
+            done={false} 
+            title={task.title}
+             when={task.when}
+              type={task.type}
+              onPress={() => Show(task._id)}
+              />
           ))
       }
 
