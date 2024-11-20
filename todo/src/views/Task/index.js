@@ -9,7 +9,8 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Switch,
-  Alert
+  Alert,
+  ActivityIndicator
 } 
   from 'react-native'
 
@@ -37,6 +38,7 @@ import {
     const [date,setDate] = useState()
     const [hour,setHour] = useState('12:34')
     const [macaddress,setMacaddress] = useState('11:11:11:11:11:11')
+    const [load,setLoad] = useState(true)
 
     async function New(){
 
@@ -62,25 +64,50 @@ import {
           })
         }
     
+    async function LoadTask(){
+      setLoad(true)
+      await api.get(`/task/${id}`).then((response) => {
+        setDone(response.data.done)
+        setType(response.data.type)
+        setTitle(response.data.title)
+        setDescription(response.data.description)
+        setDate(response.data.when)
+        setHour(response.data.when)
+
+      })
+    }    
+
     async function getMacAddress(){
       await Network.getIpAddressAsync().then((mac) => { //ios e android novos nao suportam mac logo fiz com o ip
         setMacaddress(mac)
+        setLoad(false)
       })
     }
 
+
+
+
     useEffect(()=> {
+      getMacAddress()  
       if(route.params){
         setId(route.params.idtask)
+        LoadTask().then(() => {setLoad(false)})
 
       }
-      getMacAddress()  
+      
     })
 
 
     return(
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <Header showBack={true} navigation={navigation} />
+        
+{ 
+        load 
+        ?
+        <ActivityIndicator color='#ee6b26' size={50} style={{marginTop:150}} />
 
+        :
         <ScrollView style={{width:'100%'}}>
                             {/* --ICONES--*/}
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{marginVertical:10}} >
@@ -110,10 +137,11 @@ import {
             placeholder="Detalhes da atividade..."
             multiline={true}
             onChange={(text) => setDescription(text)}
+            value={description}
              />
 
           <Index type={'date'} save={setDate} date={date}  />
-          <Index type={'hour'} save={setHour} date={hour} />
+          <Index type={'hour'} save={setHour} hour={hour} />
 
           {id &&
           <View style={styles.inLine}  >
@@ -127,6 +155,7 @@ import {
           </View>
           }
         </ScrollView>
+        }
 
         <Footer icon={'save'} onPress={New} />
       </KeyboardAvoidingView>
