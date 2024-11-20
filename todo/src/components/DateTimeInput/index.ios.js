@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TouchableOpacity, View, Image, Text } from "react-native";
+import { TouchableOpacity, View, Image, Text,TextInput } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import iconCalendar from "../../assets/calendar.png";
@@ -7,7 +7,10 @@ import iconClock from "../../assets/clock.png";
 
 import styles from "./styles";
 
-export default function DateTimeInputIOS({ type }) {
+import {format} from 'date-fns'
+
+
+export default function DateTimeInputIOS({ type, save }) {
   const [datetime, setDateTime] = useState(new Date()); // Estado para armazenar data/hora
   const [showPicker, setShowPicker] = useState(false); // Estado para controlar visibilidade do picker
 
@@ -20,7 +23,12 @@ export default function DateTimeInputIOS({ type }) {
 
   const formatDate = (date) => {
     if (type === "date") {
-      return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+      
+      const day = date.getDate();
+      const month = date.getMonth()
+      const year = date.getFullYear()
+
+      return `${day}/${month + 1}/${year}`;
     }
     return `${date.getHours()}:${date.getMinutes()}`;
   };
@@ -31,9 +39,9 @@ export default function DateTimeInputIOS({ type }) {
         style={styles.inputContainer}
         onPress={() => setShowPicker(true)} // Abre o picker ao clicar
       >
-        <Text style={styles.input}>
+        <TextInput style={styles.input} value={datetime} editable={false}>
           {type === "date" ? formatDate(datetime) : formatDate(datetime)}
-        </Text>
+        </TextInput>
         <Image
           style={styles.iconTextInput}
           source={type === "date" ? iconCalendar : iconClock}
@@ -44,7 +52,7 @@ export default function DateTimeInputIOS({ type }) {
         <DateTimePicker
           value={datetime} // Data/hora atual
           mode={type} // "date" ou "time"
-          display="spinner" // Estilo do picker no iOS
+          display="inline" // Estilo do picker no iOS
           onChange={handleDateChange} // Função para tratar mudanças
           minimumDate={type === "date" ? new Date() : undefined} // Data mínima para seleção
         />

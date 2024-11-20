@@ -8,11 +8,14 @@ import {
   TextInput,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Switch
+  Switch,
+  Alert
 } 
   from 'react-native'
 
   import styles from './styles'
+
+  import api from '../../services/api.js'
 
   //COMPONENTS
   import Header from '../../components/Header'
@@ -24,6 +27,39 @@ import {
 
   export default function Task({navigation}){
     const [done,setDone] = useState(false)
+    const [type,setType] = useState();
+    const [title,setTitle] = useState();
+    const [description,setDescription] = useState();
+    const [date,setDate] = useState()
+    const [hour,setHour] = useState()
+
+    const [macaddress,setMacaddress] = useState('11:11:11:11:11:11')
+
+    async function New(){
+         // Alert.alert()
+
+          if(!title)
+            return Alert.alert('Defina o nome da Tarefa!')
+          if(!description)
+            return Alert.alert('Defina o nome da Tarefa!')
+          if(!type)
+            return Alert.alert('Defina o Tipo!')
+          if(!date)
+            return Alert.alert('Defina uma Data para Tarefa!')
+          if(!hour)
+            return Alert.alert('Defina a HORA da Tarefa!')
+
+          await api.post('/task',{
+            macaddress,
+            type,
+            title,
+            description,
+            when: `${date}T${hour}.000`
+          }).then(()=> {
+            navigation.navigate('Home')
+          })
+        }
+        
 
 
     return(
@@ -31,27 +67,38 @@ import {
         <Header showBack={true} navigation={navigation} />
 
         <ScrollView style={{width:'100%'}}>
-
+                            {/* --ICONES--*/}
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{marginVertical:10}} >
-            {typeIcons.map((icon) => (
+            {typeIcons.map((icon,index) => (
               icon !== null &&
-              <TouchableOpacity >
-              <Image source={icon} style={styles.imageIcon} />
+              <TouchableOpacity onPress={() => setType(index)} >
+              <Image source={icon} style={[styles.imageIcon, type && type !== index && styles.typeIconInative]} />
               </TouchableOpacity>
             ))
-           
-
 }
           </ScrollView>
 
+                            {/* --TITULO--*/}
           <Text style={styles.label}>Titulo</Text>
-          <TextInput style={styles.input} maxLength={30} placeholder="Lembrar de fazer..." />
-
+          <TextInput 
+            style={styles.input} 
+            maxLength={30}
+            placeholder="Lembrar de fazer..." 
+            onChange={(text) => setTitle(text)} 
+            value={title}
+             />
+                            {/* --DETALHES--*/}
           <Text style={styles.label}>Detalhes</Text>
-          <TextInput style={styles.inputarea} maxLength={200} placeholder="Detalhes da atividade..." multiline={true} />
+          <TextInput 
+            style={styles.inputarea} 
+            maxLength={200}
+            placeholder="Detalhes da atividade..."
+            multiline={true}
+            onChange={(text) => setDescription(text)}
+             />
 
-          <Index type={'date'}  />
-          <Index type={'hour'}  />
+          <Index type={'date'} save={setDate} date={date}  />
+          <Index type={'hour'} save={setHour} date={hour} />
 
           <View style={styles.inLine}  >
             <View style={styles.inputInline}>  
@@ -64,7 +111,7 @@ import {
           </View>
         </ScrollView>
 
-        <Footer icon={'save'}  />
+        <Footer icon={'save'} onPress={New} />
       </KeyboardAvoidingView>
     )
   }
