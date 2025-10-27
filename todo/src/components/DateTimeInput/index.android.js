@@ -3,6 +3,7 @@ import { TouchableOpacity, View, TextInput, Image } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 
 import styles from "./styles";
+import { globalStyles } from "../../styles/global";
 
 import iconCalendar from "../../assets/calendar.png";
 import iconClock from "../../assets/clock.png";
@@ -53,6 +54,7 @@ export default function DateTimeInputAndroid({ type }) {
               ? "Clique aqui para definir a data"
               : "Clique aqui para definir a hora"
           }
+          placeholderTextColor={globalStyles.colors.forest[400]}
           editable={false}
           value={datetime}
         />

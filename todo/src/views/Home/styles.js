@@ -1,50 +1,75 @@
-import {StyleSheet} from 'react-native'
+import { StyleSheet } from "react-native";
+import { globalStyles } from "../../styles/global";
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    backgroundColor:'#fff',
-    alignItems:'center', //alinhamento - HORIZONTAL
-    justifyContent:'flex-start' //alinhamento - VERTICAL
+  container: {
+    flex: 1,
+    backgroundColor: globalStyles.colors.cream[500], // cream-500 (gradient background)
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingBottom: 120, // Espaço para o Footer
   },
-  filter:{
-    flexDirection:'row',
-    width:'100%',
-    justifyContent:'space-around',
-    height:70,
-    alignItems:'center'
+  mainContent: {
+    flex: 1,
+    width: "100%",
   },
-  filterTextActived:{
-    fontWeight:'bold',
-    fontSize:18,
-    color:'#ee6b26'
+  filter: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-around",
+    height: 70,
+    alignItems: "center",
+    backgroundColor: globalStyles.colors.cream[100], // cream-100
+    marginHorizontal: 16,
+    borderRadius: 12,
+    marginVertical: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
-  filterTextInatived:{
-    color:'#2029f5',
-    fontWeight:'bold',
-    fontSize:18,
-    opacity:0.5,
+  filterTextActived: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: globalStyles.colors.sage[600], // sage-600
+    backgroundColor: globalStyles.colors.sage[100],
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
   },
-  content:{
-    width:'100%',
-    marginTop:10,
+  filterTextInatived: {
+    color: globalStyles.colors.forest[500], // forest-500
+    fontWeight: "500",
+    fontSize: 16,
+    opacity: 0.7,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
   },
-  title:{
-    width:'100%',
-    borderBottomWidth:1,
-    borderColor:'#20295f',
-    alignItems:'center',
-    marginBottom:20,
+  content: {
+    width: "100%",
+    marginTop: 10,
+    paddingHorizontal: 16,
   },
-  titleText:{
-    color:'#20295f',
-    fontSize:18,
-    position:'relative',
-    top:10,
-    backgroundColor:'#fff',
-   
-  }
-})
-
+  title: {
+    width: "100%",
+    borderBottomWidth: 2,
+    borderColor: globalStyles.colors.sage[200], // sage-200
+    alignItems: "center",
+    marginBottom: 20,
+    paddingHorizontal: 16,
+  },
+  titleText: {
+    color: globalStyles.colors.forest[600], // forest-600
+    fontSize: 20,
+    fontWeight: "600",
+    backgroundColor: globalStyles.colors.cream[500], // cream-500
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+});
 
 export default styles;

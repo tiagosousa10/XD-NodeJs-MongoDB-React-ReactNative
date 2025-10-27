@@ -1,6 +1,17 @@
-const mongoose = require('mongoose')
+import mongoose from "mongoose";
 
-const url= 'mongodb://localhost:27017/todo'
-mongoose.connect(url)
+const url =
+  "mongodb+srv://tiagosousatams_db_user:yvYeB5YulsZtxCZs@cluster0.o3hctwe.mongodb.net/todoapp?retryWrites=true&w=majority&appName=Cluster0";
 
-module.exports = mongoose;
+//connect to mongodb database
+
+const connectDB = async () => {
+  try {
+    mongoose.connection.on("connected", () => console.log("MongoDB connected"));
+    await mongoose.connect(`${url}`);
+  } catch (error) {
+    console.log(`Error on MongoDB: ${error.message}`);
+  }
+};
+
+export default connectDB;

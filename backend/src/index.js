@@ -1,10 +1,21 @@
-const express = require('express')
-const server = express()
-server.use(express.json())
+import express from "express";
+import cors from "cors";
+import TaskRoutes from "./routes/TaskRoutes.js";
+import connectDB from "./config/database.js";
 
-const TaskRoutes = require('./routes/TaskRoutes')
-server.use('/task', TaskRoutes)
+const server = express();
+server.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 
-server.listen(3000, () => {
-  console.log('Api Online')
-})
+await connectDB();
+
+server.use(express.json());
+
+server.use("/task", TaskRoutes);
+
+server.listen(3002, () => {
+  console.log("Api Online");
+});
